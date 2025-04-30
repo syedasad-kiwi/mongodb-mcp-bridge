@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  mcp-server:
+    build: .
+    ports:
+      - "6274:6274"
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+    volumes:
+      - .:/app
+    command: ["mcp", "dev", "mongodb_mcp_server.py"]
+    restart: unless-stopped

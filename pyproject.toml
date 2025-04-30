@@ -1,0 +1,28 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mongodb-mcp-bridge"
+version = "0.1.0"
+description = "MCP server implementation for MongoDB integration"
+readme = "README.md"
+authors = [
+    { name = "Syed Asad", email = "" }
+]
+license = "MIT"
+requires-python = ">=3.12"
+dependencies = [
+    "mcp>=0.1.0",
+    "motor>=3.3.2",
+    "python-dotenv>=1.0.0",
+    "typing-extensions>=4.9.0",
+    "pydantic>=2.6.0",
+    "pymongo>=4.6.0"
+]
+
+[project.scripts]
+mongodb-mcp = "mongodb_mcp_server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["mongodb_mcp_server.py"]

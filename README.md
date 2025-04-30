@@ -18,47 +18,39 @@ This MCP server implementation provides a robust interface for interacting with 
 - 📦 Docker support for easy deployment
 - 🔍 Query execution with proper type hints
 
-## 🛠️ Technologies
-
-- Python 3.12+
-- MongoDB
-- Model Context Protocol (MCP)
-- Docker
-- uv package manager
-- Motor (async MongoDB driver)
-
 ## 🚀 Quick Start
 
-### Using uv (Recommended)
+### Using uvx (Python)
 
 ```bash
-# Create and activate virtual environment
-uv venv
-source .venv/bin/activate  # On Unix/macOS
-# OR
-.venv\Scripts\activate  # On Windows
+# Run directly with uvx
+uvx mongodb-mcp-bridge
 
-# Install dependencies
-uv pip install -r requirements.txt
-
-# Run the server
-mcp dev mongodb_mcp_server.py
+# With SSE transport for remote connections
+uvx mongodb-mcp-bridge --transport=sse
 ```
 
-### Using pip
+### Using npx (Node.js)
 
 ```bash
-# Create and activate virtual environment
-python -m venv venv
-source venv/bin/activate  # On Unix/macOS
-# OR
-venv\Scripts\activate  # On Windows
+# Run directly with npx
+npx mongodb-mcp-bridge
 
-# Install dependencies
-pip install -r requirements.txt
+# With SSE transport for remote connections
+npx mongodb-mcp-bridge --transport=sse
+```
 
-# Run the server
-mcp dev mongodb_mcp_server.py
+### Environment Variables
+
+Set these environment variables before running the server:
+
+```bash
+# Required
+MONGODB_URI="your_mongodb_connection_string"
+
+# Optional
+MONGODB_DB="default_database_name"
+MCP_PORT="6274"  # Default port for MCP Inspector
 ```
 
 ### Using Docker 🐳
@@ -71,13 +63,50 @@ docker build -t mongodb-mcp-server .
 docker run -e MONGODB_URI="your_mongodb_uri" -p 6274:6274 mongodb-mcp-server
 ```
 
-## 🔧 Configuration
+## 🔗 IDE Integration
 
-Set the following environment variables:
+### VS Code Setup
 
-- `MONGODB_URI`: Your MongoDB connection string
-- `MONGODB_DB`: (Optional) Default database name
-- `MCP_PORT`: (Optional) Port for the MCP server (default: 6274)
+Add this to your VS Code settings.json:
+
+```json
+{
+  "mcp": {
+    "inputs": [
+      {
+        "type": "promptString",
+        "id": "mongodbUri",
+        "description": "MongoDB Connection URI"
+      }
+    ],
+    "servers": {
+      "mongodb": {
+        "command": "uvx",
+        "args": ["mongodb-mcp-bridge", "--transport=sse"],
+        "env": {
+          "MONGODB_URI": "$(mongodbUri)"
+        }
+      }
+    }
+  }
+}
+```
+
+### Cursor/Windsurf Setup
+
+For Cursor or Windsurf, configure the MCP server with:
+
+```json
+{
+  "mcp": {
+    "servers": {
+      "mongodb": {
+        "url": "http://localhost:6274"
+      }
+    }
+  }
+}
+```
 
 ## 📚 Available Tools
 
